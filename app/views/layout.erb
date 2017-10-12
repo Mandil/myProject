@@ -1,23 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- 
+  <!--
     normalize.css removes cross-browser differences in defaults, e.g.,
     differences in how form elements appear between Firefox and IE
     See: http://necolas.github.com/normalize.css/
   -->
   <link rel="stylesheet" href="/css/normalize.css">
+  <link href="https://fonts.googleapis.com/css?family=Nosifer|Roboto" rel="stylesheet">
+
   <!--
     application.css is where you put your styles
   -->
   <link rel="stylesheet" href="/css/application.css">
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="/js/application.js"></script>
 
   <title></title>
 </head>
 <body>
-  <%= yield %>
+  <div class="navbar">
+    <h1><a href="/"><span>HAM</span> Something</a></h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <% if session[:user_id].nil? %>
+          <!-- not loged in -->
+          <li><a href="/sessions/new">login</a></li>
+          <li><a href="/users/new">register</a></li>
+        <% else %>
+          <!-- loged in -->
+          <li> <%= erb :'/sessions/_delete' %> </li>
+          <li> <%= User.find(session[:user_id]).username %> </li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="notification-box">
+      <%= erb :'/_errors' %>
+      <%= erb :'/_messages' %>
+    </div>
+    <%= yield %>
+  </div>
 </body>
 </html>
